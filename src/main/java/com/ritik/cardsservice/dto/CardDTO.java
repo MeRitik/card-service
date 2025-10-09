@@ -34,17 +34,17 @@ public class CardDTO {
     @Schema(
             description = "Total amount limit available against a card", example = "100000"
     )
-    private int totalLimit;
+    private Double totalLimit;
 
     @PositiveOrZero(message = "Total amount used should be equal or greater than zero")
     @Schema(
             description = "Total amount used by a Customer", example = "1000"
     )
-    private int amountUsed;
+    private Double amountUsed;
 
     @PositiveOrZero(message = "Total available amount should be equal or greater than zero")
     @Schema(
             description = "Total available amount against a card", example = "90000"
     )
-    private int availableAmount;
+    private Double availableAmount;
 }
