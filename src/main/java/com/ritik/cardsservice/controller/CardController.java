@@ -1,6 +1,7 @@
 package com.ritik.cardsservice.controller;
 
 import com.ritik.cardsservice.constants.CardConstants;
+import com.ritik.cardsservice.dto.CardContactInfoDTO;
 import com.ritik.cardsservice.dto.CardDTO;
 import com.ritik.cardsservice.dto.ErrorResponseDTO;
 import com.ritik.cardsservice.dto.ResponseDTO;
@@ -13,7 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,11 +27,21 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path = "/api", produces = "application/json")
-@AllArgsConstructor
 @Validated
 public class CardController {
 
-    private CardService cardService;
+    private final CardService cardService;
+    private final Environment environment;
+    private final CardContactInfoDTO cardContactInfoDTO;
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    public CardController(CardService cardService, Environment environment, CardContactInfoDTO cardContactInfoDTO) {
+        this.cardService = cardService;
+        this.environment = environment;
+        this.cardContactInfoDTO = cardContactInfoDTO;
+    }
 
 
     @Operation(
@@ -161,5 +173,75 @@ public class CardController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDTO(CardConstants.STATUS_417, CardConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(
+            summary = "Get Build information",
+            description = "Get Build information that is deployed into cards microservice"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            )
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo() {
+        return ResponseEntity
+                .ok(buildVersion);
+    }
+
+    @Operation(
+            summary = "Get Java Version",
+            description = "Get Java version that is installed in the system"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity
+                .ok(environment.getProperty("JAVA_HOME"));
+    }
+
+    @Operation(
+            summary = "Get Contact Info",
+            description = "Contact Info details that can be reached out in case of any issues"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<CardContactInfoDTO> getContactInfo() {
+        System.out.println(cardContactInfoDTO);
+        return ResponseEntity
+                .ok(cardContactInfoDTO);
     }
 }

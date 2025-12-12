@@ -17,3 +17,27 @@ spring:
       ddl-auto: update
 
     show-sql: true
+
+
+  config:
+    import:
+      - "application_qa.yaml"
+      - "application_prod.yaml"
+
+  profiles:
+    active:
+      - "qa"
+
+
+build:
+  version: "3.0"
+
+cards:
+  message: "Welcome to Bank Cards's related queries"
+  contactDetails:
+    name: "Abhi Bansal"
+    email: "mybank@gmail.com"
+    phone: "9876543210"
+  onCallSupport:
+    - "123456789"
+    - "987654321"
