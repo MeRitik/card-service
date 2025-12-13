@@ -5,7 +5,7 @@ import com.ritik.cardsservice.dto.CardContactInfoDTO;
 import com.ritik.cardsservice.dto.CardDTO;
 import com.ritik.cardsservice.dto.ErrorResponseDTO;
 import com.ritik.cardsservice.dto.ResponseDTO;
-import com.ritik.cardsservice.service.impl.CardService;
+import com.ritik.cardsservice.service.ICardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,14 +30,14 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class CardController {
 
-    private final CardService cardService;
+    private final ICardService cardService;
     private final Environment environment;
     private final CardContactInfoDTO cardContactInfoDTO;
 
     @Value("${build.version}")
     private String buildVersion;
 
-    public CardController(CardService cardService, Environment environment, CardContactInfoDTO cardContactInfoDTO) {
+    public CardController(ICardService cardService, Environment environment, CardContactInfoDTO cardContactInfoDTO) {
         this.cardService = cardService;
         this.environment = environment;
         this.cardContactInfoDTO = cardContactInfoDTO;

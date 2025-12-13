@@ -2,6 +2,9 @@ server:
   port: 9000
 
 spring:
+  application:
+    name: "cards"
+
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
@@ -18,26 +21,9 @@ spring:
 
     show-sql: true
 
-
   config:
-    import:
-      - "application_qa.yaml"
-      - "application_prod.yaml"
+    import: "optional:configserver:http://localhost:8071"
 
   profiles:
     active:
       - "qa"
-
-
-build:
-  version: "3.0"
-
-cards:
-  message: "Welcome to Bank Cards's related queries"
-  contactDetails:
-    name: "Abhi Bansal"
-    email: "mybank@gmail.com"
-    phone: "9876543210"
-  onCallSupport:
-    - "123456789"
-    - "987654321"
