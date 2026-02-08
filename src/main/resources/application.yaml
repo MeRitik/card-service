@@ -29,13 +29,6 @@ spring:
       - "qa"
 
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    stream:
-      username: guest
-      password: guest
-
 management:
   endpoints:
     web:
