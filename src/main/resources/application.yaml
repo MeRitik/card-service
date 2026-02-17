@@ -55,3 +55,9 @@ info:
     name: "cards"
     description: "Bank cards Application"
     version: "2.1.1"
+
+logging:
+  level:
+    com:
+      ritik:
+        cardsservice: DEBUG
